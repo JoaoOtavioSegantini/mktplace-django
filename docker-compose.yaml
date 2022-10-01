@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: marketplace-python-app
+    command: ./.docker/start-app.sh
+    volumes:
+      - .:/home/python/app
+    ports:
+      - "8000:8000"
