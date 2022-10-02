@@ -11,6 +11,8 @@ dependencies = [
     "django-extensions>=3.2.1",
     "dependency-injector>=4.40.0",
     "django-ajax-selects>=2.2.0",
+    "algoliasearch-django>=2.0.0",
+    "python-dotenv>=0.21.0",
 ]
 requires-python = ">=3.10"
 license = {text = "MIT"}
