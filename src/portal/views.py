@@ -2,6 +2,8 @@
 
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+import algoliasearch_django as algoliasearch
 
 from portal.models import Product, Category, ProductAnswer, ProductQuestion
 from portal.forms import AnswerQuestionForm, ProductForm, ProductQuestionForm
@@ -9,7 +11,15 @@ from portal.forms import AnswerQuestionForm, ProductForm, ProductQuestionForm
 
 
 def home(request):
-    return render(request, 'portal/home.html', {})
+    categories = Category.objects.filter(hidden=False, parent__isnull=True) \
+        .exclude(categories__isnull=True) \
+        .order_by('name')
+
+    context = {
+        'categories': categories
+    }
+
+    return render(request, 'portal/home.html', context)
 
 
 def my_products(request):
@@ -161,3 +171,52 @@ def product_answer_question(request, product_id, question_id):
     }
 
     return render(request, 'portal/product_answer_question.html', context)
+
+
+def search(request):
+    categories = Category.objects.filter(
+        hidden=False, parent__isnull=True).order_by('name')
+
+    qs = request.GET.get('qs', '')  # pylint: disable=invalid-name
+    str_category = request.GET.get('category', '')
+    page = request.GET.get('page', "0")
+
+    results = None
+    cat_name = ""
+    next_page = ""
+    previous_page = ""
+
+    if page:
+        next_page = int(page) + 1
+        previous_page = int(page) - 1
+
+    if qs:
+        params = {"hitsPerPage": 1, "page": page}
+        results = algoliasearch.raw_search(Product, qs, params)
+
+    if str_category:
+        cat = get_object_or_404(Category, slug=str_category)
+        cat_name = cat.name
+        results = Product.objects.filter(categories=cat).order_by('id')
+
+        paginator = Paginator(results, 1)
+        page = request.GET.get('page', 1)
+
+        try:
+            results = paginator.page(page)
+        except PageNotAnInteger:
+            results = paginator.page(1)
+        except EmptyPage:
+            results = paginator.page(paginator.num_pages)
+
+    context = {
+        'categories': categories,
+        'results': results,
+        'cat_name': cat_name,
+        'qs': qs,
+        'next_page': next_page,
+        'previous_page': previous_page,
+        'str_category': str_category
+    }
+
+    return render(request, 'portal/product_search.html', context)
