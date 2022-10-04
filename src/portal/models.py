@@ -21,6 +21,10 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    @property
+    def products(self):
+        return self.categories.filter(status='Active').order_by('-id')[:8]  # pylint: disable=no-member
+
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -45,6 +49,7 @@ class Product(models.Model):
 
     class Meta:
         verbose_name_plural = "Products"
+       # ordering = ['-id']
 
     def __str__(self) -> str:
         return self.name

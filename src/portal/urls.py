@@ -18,18 +18,28 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+
+    path('search/', views.search, name='search'),
+
     path('my_products/', views.my_products, name='my_products'),
+
     path('product/new/', views.product_new, name='product_new'),
+
     path('product/new/question/<int:product_id>',
          views.product_new_question, name='product_question_new'),
+
     path('product/edit/<int:product_id>',
          views.product_edit, name='product_edit'),
+
     path('product/<str:slug>',
          views.product_show, name='product_show'),
+
     path('product/<int:product_id>/images',
          views.product_images, name='product_images'),
+
     path('product/<int:product_id>/questions',
          views.product_question, name='product_question'),
+
     path('product/<int:product_id>/questions/<int:question_id>',
          views.product_answer_question, name='product_answer_question'),
 ]
