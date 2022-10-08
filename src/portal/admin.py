@@ -3,7 +3,14 @@ from ajax_select.admin import AjaxSelectAdmin
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
-from portal.models import Category, Product, ProductAnswer, ProductQuestion, UserProfile
+from portal.models import (
+    Category,
+    Product,
+    ProductAnswer,
+    ProductImages,
+    ProductQuestion,
+    UserProfile
+)
 # Register your models here.
 
 
@@ -25,12 +32,18 @@ class CategoryAdmin(AjaxSelectAdmin):
     })
 
 
+class ProductImageInline(admin.StackedInline):
+    model = ProductImages
+
+
 class ProductAdmin(AjaxSelectAdmin):
-    prepopulated_fields = {"slug": ("name",)}
+    prepopulated_fields = {"slug": ('name',)}
     list_filter = ['status']
     list_display = ('id', 'name', 'short_description', 'status')
+    inlines = (ProductImageInline, )
     form = make_ajax_form(Product, {
-        'user': 'user'
+        'user': 'user',
+        # 'categories': 'categories'
     })
 
 

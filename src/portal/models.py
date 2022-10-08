@@ -4,6 +4,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 
+from s3direct.fields import S3DirectField
+
 # Create your models here.
 
 
@@ -120,3 +122,12 @@ class UserProfile(models.Model):
         max_length=255, null=True, blank=True, default='')
     remote_receiver_id = models.CharField(
         max_length=255, null=True, blank=True, default='')
+
+
+class ProductImages(models.Model):
+    product = models.ForeignKey(
+        Product, related_name='prod_images', on_delete=models.CASCADE)
+    images = S3DirectField(dest='product_images')
+
+    class Meta:
+        verbose_name_plural = "Images"

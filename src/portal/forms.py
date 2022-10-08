@@ -2,6 +2,8 @@ from django import forms
 from portal.models import Product, ProductAnswer, UserProfile
 from django.contrib.auth.models import User
 
+from s3direct.widgets import S3DirectWidget
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -103,3 +105,6 @@ class UserForm(forms.ModelForm):
             'first_name': "Nome",
             'last_name': "Sobrenome",
         }
+
+class S3DirectUploadForm(forms.Form):
+    images = forms.URLField(widget=S3DirectWidget(dest='product_images'))
