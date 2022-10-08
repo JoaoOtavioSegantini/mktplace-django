@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ajax_select',
     'algoliasearch_django',
+    'billing',
     'portal',
     'login'
 ]
