@@ -24,7 +24,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand navbar-brand-market-place" href="" title="Mercadp Livre" target="_blank"
+                <a class="navbar-brand navbar-brand-market-place" href="{% url 'home' %}" title="Mercado Livre"
                     rel="nofollow">
                     <img alt="Brand" src="{% static 'img/logo-pt__large.png' %}">
                 </a>
@@ -51,7 +51,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                             aria-expanded="false"><span>{{ request.user.username }}</span> <i class="fa fa-user-o"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Minha conta</a></li>
+                            <li><a href="{% url 'my_data' %}">Minha conta</a></li>
                             <li><a href="{% url 'logout' %}">Sair</a></li>
                         </ul>
                     </li>
