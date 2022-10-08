@@ -44,4 +44,13 @@ urlpatterns = [
 
     path('product/<int:product_id>/questions/<int:question_id>',
          views.product_answer_question, name='product_answer_question'),
+
+    path('product/<int:product_id>/image/<int:image_id>/delete', views.prodcut_images_delete,
+         name='product_images_delete'),
+
+    path('product/<int:product_id>/images',
+         views.product_images, name='product_images'),
+
+    path('product/<int:product_id>/new/image/',
+         views.product_images_new, name='product_images_new'),
 ]
