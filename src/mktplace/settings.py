@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ajax_select',
     'algoliasearch_django',
+    'boto',
+    's3direct',
     'billing',
     'portal',
     'login'
@@ -138,4 +140,23 @@ load_dotenv()
 ALGOLIA = {
     'APPLICATION_ID': os.environ.get('ALGOLIA_APP_ID'),
     'API_KEY': os.environ.get('ALGOLIA_APP_KEY'),
+}
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+# Bucket name
+AWS_STORAGE_BUCKET_NAME = os.getenv('S3_BUCKET')
+
+# The region of your bucket, more info:
+# http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
+AWS_S3_REGION_NAME = os.getenv('AWS_REGION')
+AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
+
+S3DIRECT_DESTINATIONS = {
+    'product_images': {
+        'key': 'uploads/images',
+        'auth': lambda u: u.is_authenticated, # Default allow anybody to upload
+        'allowed': ['image/jpeg', 'image/png'],  # Default allow all mime types
+    }
 }
