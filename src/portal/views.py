@@ -1,16 +1,20 @@
 # pylint: disable=no-member
 
+from django.conf import settings
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 import algoliasearch_django as algoliasearch
-
-from portal.models import Product, Category, ProductAnswer, ProductQuestion, UserProfile
+from boto.s3.connection import Bucket, S3Connection
+from portal.models import (
+    Product, Category, ProductAnswer, ProductImages, ProductQuestion, UserProfile)
 from portal.forms import (
     AnswerQuestionForm,
     ProductForm,
     ProductQuestionForm,
+    S3DirectUploadForm,
     UserForm,
     UserProfileForm
 )
@@ -29,6 +33,7 @@ def home(request):
     return render(request, 'portal/home.html', context)
 
 
+@login_required
 def my_products(request):
     products = Product.objects.filter(
         user=request.user)
@@ -40,6 +45,7 @@ def my_products(request):
     return render(request, 'portal/my_products.html', context)
 
 
+@login_required
 def product_new(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -70,6 +76,7 @@ def product_new(request):
     return render(request, 'portal/product_new.html', context)
 
 
+@login_required
 def product_edit(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
@@ -115,6 +122,7 @@ def product_show(request, slug):
     return render(request, 'portal/product_show.html', context)
 
 
+@login_required
 def product_new_question(request, product_id):
     product = get_object_or_404(Product, id=product_id, status='Active')
 
@@ -131,18 +139,7 @@ def product_new_question(request, product_id):
     return redirect('product_show', product.slug)
 
 
-def product_images(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
- #   images = ProductImages.objects.filter(product=product)
-
-    context = {
-        'product': product,
-        'images': {}
-    }
-
-    return render(request, 'portal/product_images.html', context)
-
-
+@login_required
 def product_question(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
@@ -153,6 +150,7 @@ def product_question(request, product_id):
     return render(request, 'portal/product_question.html', context)
 
 
+@login_required
 def product_answer_question(request, product_id, question_id):
     product = get_object_or_404(Product, pk=product_id)
     question = get_object_or_404(ProductQuestion, pk=question_id)
@@ -229,6 +227,7 @@ def search(request):
     return render(request, 'portal/product_search.html', context)
 
 
+@login_required
 def my_data(request):
     user = User.objects.get(pk=request.user.pk)
     user_form = UserForm(instance=user)
@@ -270,3 +269,64 @@ def my_data(request):
     }
 
     return render(request, 'portal/my_data.html', context)
+
+
+@login_required
+def product_images(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    images = ProductImages.objects.filter(product=product)
+
+    context = {
+        'product': product,
+        'images': images
+    }
+
+    return render(request, 'portal/product_images.html', context)
+
+
+@login_required
+def product_images_new(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+
+    form = S3DirectUploadForm()
+
+    if request.method == 'POST':
+        form = S3DirectUploadForm(request.POST)
+        if form.is_valid():
+            upload = ProductImages()
+            upload.product = product
+            upload.images = form.cleaned_data['images']
+            upload.save()
+
+            return redirect('product_images', product_id)
+
+    context = {
+        'form': form,
+        'product': product
+    }
+
+    return render(request, 'portal/product_images_new.html', context)
+
+
+@login_required
+def prodcut_images_delete(request, product_id, image_id):
+    product = get_object_or_404(Product, pk=product_id)
+
+    if product.user != request.user:
+        redirect('home')
+
+    image = get_object_or_404(ProductImages, pk=image_id)
+
+    s3conn = S3Connection(settings.AWS_ACCESS_KEY_ID,
+                          settings.AWS_SECRET_ACCESS_KEY)
+    bucket = Bucket(s3conn, settings.AWS_STORAGE_BUCKET_NAME)
+
+    name_image = image.images.split('/')
+
+    try:
+        bucket.delete_key(f'upload/images/{name_image[-1]}')
+        image.delete()
+    except Exception as ex:  # pylint: disable=broad-except
+        print(ex)
+
+    return redirect('product_images', product_id)
