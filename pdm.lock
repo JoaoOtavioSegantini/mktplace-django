@@ -49,6 +49,11 @@ dependencies = [
 ]
 
 [[package]]
+name = "boto"
+version = "2.49.0"
+summary = "Amazon Web Services Library"
+
+[[package]]
 name = "certifi"
 version = "2022.9.24"
 requires_python = ">=3.6"
@@ -120,6 +125,14 @@ requires_python = ">=3.6"
 summary = "Extensions for Django"
 dependencies = [
     "Django>=3.2",
+]
+
+[[package]]
+name = "django-s3direct"
+version = "2.0.3"
+summary = "Add direct uploads to S3 functionality with a progress bar to file input fields."
+dependencies = [
+    "django>=3.0",
 ]
 
 [[package]]
@@ -331,7 +344,7 @@ summary = "Module for decorators, wrappers and monkey patching."
 
 [metadata]
 lock_version = "4.0"
-content_hash = "sha256:e985f9962fde728557fb7c86f51806be71ca3d503e8cee50d45f7d7c155c1d6f"
+content_hash = "sha256:88e714171474436de703516c5994d9fd9ae00def0fa5853f32ddfab0163263ca"
 
 [metadata.files]
 "algoliasearch 2.6.2" = [
@@ -357,6 +370,10 @@ content_hash = "sha256:e985f9962fde728557fb7c86f51806be71ca3d503e8cee50d45f7d7c1
 "autopep8 1.7.0" = [
     {url = "https://files.pythonhosted.org/packages/5d/9b/1ed75f8c9086fafe0e9bbb379a70c43b1aa9dff6154ddcfb818f78cb0736/autopep8-1.7.0-py2.py3-none-any.whl", hash = "sha256:6f09e90a2be784317e84dc1add17ebfc7abe3924239957a37e5040e27d812087"},
     {url = "https://files.pythonhosted.org/packages/d0/5d/016888824972086a4ee164806520d85ff173e83699907b9cfe119aaefbbc/autopep8-1.7.0.tar.gz", hash = "sha256:ca9b1a83e53a7fad65d731dc7a2a2d50aa48f43850407c59f6a1a306c4201142"},
+]
+"boto 2.49.0" = [
+    {url = "https://files.pythonhosted.org/packages/23/10/c0b78c27298029e4454a472a1919bde20cb182dab1662cec7f2ca1dcc523/boto-2.49.0-py2.py3-none-any.whl", hash = "sha256:147758d41ae7240dc989f0039f27da8ca0d53734be0eb869ef16e3adcfa462e8"},
+    {url = "https://files.pythonhosted.org/packages/c8/af/54a920ff4255664f5d238b5aebd8eedf7a07c7a5e71e27afcfe840b82f51/boto-2.49.0.tar.gz", hash = "sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a"},
 ]
 "certifi 2022.9.24" = [
     {url = "https://files.pythonhosted.org/packages/1d/38/fa96a426e0c0e68aabc68e896584b83ad1eec779265a028e156ce509630e/certifi-2022.9.24-py3-none-any.whl", hash = "sha256:90c1a32f1d68f940488354e36370f6cca89f0f106db09518524c88d6ed83f382"},
@@ -474,6 +491,9 @@ content_hash = "sha256:e985f9962fde728557fb7c86f51806be71ca3d503e8cee50d45f7d7c1
 "django-extensions 3.2.1" = [
     {url = "https://files.pythonhosted.org/packages/00/a8/36d25c69589a44680e49f8b1886f65379829af4464384bd10a205c93532a/django_extensions-3.2.1-py3-none-any.whl", hash = "sha256:421464be390289513f86cb5e18eb43e5dc1de8b4c27ba9faa3b91261b0d67e09"},
     {url = "https://files.pythonhosted.org/packages/43/aa/94ea07a87d52f484a562e701ee7af8dee4a43f3260b10d500d178ecbfcc7/django-extensions-3.2.1.tar.gz", hash = "sha256:2a4f4d757be2563cd1ff7cfdf2e57468f5f931cc88b23cf82ca75717aae504a4"},
+]
+"django-s3direct 2.0.3" = [
+    {url = "https://files.pythonhosted.org/packages/f5/f7/4850568b9adc6059460f581b272f185b52df0841d146d908994d009eb1df/django-s3direct-2.0.3.tar.gz", hash = "sha256:84c1eee9b0804ff9b07a43ce59be33aa3e171ec3628e4bde1c11313f644ead63"},
 ]
 "djangorestframework 3.14.0" = [
     {url = "https://files.pythonhosted.org/packages/8e/53/5b2a002c5ebafd60dff1e1945a7d63dee40155830997439a9ba324f0fd50/djangorestframework-3.14.0.tar.gz", hash = "sha256:579a333e6256b09489cbe0a067e66abe55c6595d8926be6b99423786334350c8"},
