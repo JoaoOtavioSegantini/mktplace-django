@@ -16,7 +16,15 @@
             <div class="col-sm-6 col-md-3">
                 <a href="{% url 'product_show' product.slug %}">
                     <div class="thumbnail">
-                        <img src="{% static "img/01.jpg" %}">
+
+                        {% if product.prod_images %}
+
+                        <img src="{{ product.prod_images.first.images }}">
+                        {% else %}
+
+                        <img src="{% static " img/sem-imagem.jpg" %}">
+                        {% endif %}
+
                         <div class="caption">
                             <h3>{{ product.name|truncatechars:30 }}</h3>
                             <p>R$ {{ product.price }}</p>

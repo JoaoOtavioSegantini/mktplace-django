@@ -52,6 +52,7 @@
                             aria-expanded="false"><span>{{ request.user.username }}</span> <i class="fa fa-user-o"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'my_data' %}">Minha conta</a></li>
+                            <li><a href="{% url 'my_products' %}">Meus anúncios</a></li>
                             <li><a href="{% url 'logout' %}">Sair</a></li>
                         </ul>
                     </li>
