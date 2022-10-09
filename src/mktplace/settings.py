@@ -156,7 +156,10 @@ AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
 S3DIRECT_DESTINATIONS = {
     'product_images': {
         'key': 'uploads/images',
-        'auth': lambda u: u.is_authenticated, # Default allow anybody to upload
+        'auth': lambda u: u.is_authenticated,  # Default allow anybody to upload
         'allowed': ['image/jpeg', 'image/png'],  # Default allow all mime types
     }
 }
+
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')

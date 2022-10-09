@@ -31,7 +31,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(
         Category, blank=True, related_name="categories")
     quantity = models.IntegerField(default=1)
@@ -59,11 +59,12 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         is_new = self.pk is None
         if is_new:
-            super(Product, self).save()
-         #   self.slug = '%s-%i' % (slugify(self.name), self.id)
+            super().save()
             self.slug = f"{slugify(self.name)}-{self.id}"  # pylint: disable=no-member
-        super(Product, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
+         # poderia ser feito assim, mas fica menos legível:
+         # self.slug = '%s-%i' % (slugify(self.name), self.id)
 
 class ProductQuestion(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

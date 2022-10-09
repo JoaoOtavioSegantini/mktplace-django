@@ -91,7 +91,7 @@ def product_edit(request, product_id):
             product.price = form.cleaned_data['price']
             product.short_description = form.cleaned_data['short_description']
             product.description = form.cleaned_data['description']
-            product.categories = form.cleaned_data['categories']
+            product.categories.set(form.cleaned_data['categories'])
             product.status = form.cleaned_data['status']
 
             product.save()

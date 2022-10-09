@@ -22,6 +22,7 @@ urlpatterns = [
     path('ajax_select/', include(ajax_select_urls)),
     path('', include('portal.urls')),
     path('', include('login.urls')),
+    path('', include('billing.urls')),
     path('s3direct/', include('s3direct.urls')),
 
 ]
